@@ -6,6 +6,7 @@ import {
     firebaseMessagingSenderID,
     firebaseAppID
 } from './parameters'
+
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 

@@ -1,3 +1,6 @@
+
+// Parameters for the firelight server application
+
 const firebaseAPIKey = process.env.FIREBASE_API_KEY
 
 const firebaseAuthDomain = process.env.FIREBASE_AUTH_DOMAIN
