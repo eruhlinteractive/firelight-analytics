@@ -17,6 +17,19 @@ function emptySchemaFactory(schemaName)
         
 }
 
+function timestampEvent(eventJSON)
+{
+    //eventJSON.timestamp
+    return eventJSON;
+}
+
+function validateEvent(eventJSON)
+{
+    
+
+    return eventJSON;
+}
+
 // TODO: Define your schemas here
 class PageView extends TrackedEvent
 {

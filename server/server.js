@@ -7,6 +7,9 @@ const { env } = require('process');
 // Handler for incoming requests (from clients)
 const app = express();
 
+// Allows the body data to be parsed as JSON
+app.use(express.bodyParser());
+
 // The port to listen for incoming requests on
 const listenPort = process.env.PORT || 80
 
@@ -24,7 +27,9 @@ app.get('/ping', (req, res)=>{
 
 // Handle the logging of a new event from a client
 app.post('/log-event', (req, res)=>{
+    let bodyData = res.body;
 
+    let event = data["event"];
 });
 
 // Handle request to load dashboard
