@@ -1,10 +1,8 @@
-
-
 export class TrackedEvent
 {
-
     // Members 
-    eventID = "";
+    eventID = undefined;
+    timestamp = undefined;
 
     constructor(eventID){
         this.eventID = eventID;
@@ -22,3 +20,12 @@ export class TrackedEvent
     }
 };
 
+
+export class Database
+{
+    constructor(){};
+
+    async sendEvent(newEventJSON)
+    {};
+
+}
