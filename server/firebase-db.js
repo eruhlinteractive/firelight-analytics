@@ -1,50 +1,34 @@
-import { initializeApp, FirebaseDatabase } from "firebase-admin/app";
+import { initializeApp } from "firebase-admin/app";
+import {getFirestore } from 'firebase-admin/firestore';
+
+import admin from "firebase-admin";
 
 import { Database } from './object-base.js';
 
+import * as fs from 'fs';
+import * as path from 'path';
+
 // ================ FIREBASE SETTINGS =============================
 
-const firebaseAPIKey = process.env.FIREBASE_API_KEY
+// The path to the service auth file (relative to the location of server.js)
+const firebaseAuthLocation = process.env.FIREBASE_AUTH_LOCATION;
 
-const firebaseAuthDomain = process.env.FIREBASE_AUTH_DOMAIN
+const authPath = path.join(process.cwd(), firebaseAuthLocation);
 
-const firebaseProjectID = process.env.FIREBASE_PROJECT_ID
-
-const firebaseStorageBucket = process.env.FIREBASE_STORAGE_BUCKET
-
-const firebaseMessagingSenderID = process.env.FIREBASE_MESSAGING_SENDER_ID
-
-const firebaseAppID = process.env.FIREBASE_APP_ID
-
-
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-
-// Firebase configuration
-
-const firebaseConfig = {
-
-  apiKey: firebaseAPIKey,
-
-  authDomain: firebaseAuthDomain,
-
-  projectId: firebaseProjectID,
-
-  storageBucket: firebaseStorageBucket,
-
-  messagingSenderId: firebaseMessagingSenderID,
-
-  appId: firebaseAppID
-
-};
-
+const serviceAccountAuth = JSON.parse(fs.readFileSync(authPath));
 // Initialize Firebase
 
-const firebaseApp = initializeApp(firebaseConfig);
-const store = getFirestore(firebaseApp);
+
+const firebaseApp = initializeApp({
+
+  credential: admin.credential.cert(serviceAccountAuth)
+
+});
+
+const store = getFirestore();
 
 
-// Class to handle Firestore database transactions
+// Class to handle Firestore database transactionsadmin
 export class FireStoreDB extends Database
 {
   constructor(){
@@ -56,11 +40,13 @@ export class FireStoreDB extends Database
   {
     //const docRef = doc(store, 'events', newEventJSON["event-type"]);
 
-    const ref = await addDoc(
-      collection(store, `events/${newEventJSON['event-type']}/event-list`),
-      newEventJSON
-    );
-
+    store.collection(`events/${newEventJSON['event-type']}/event-list`).add(newEventJSON)
+    .then(async (ref)=>
+    {
+      let res = await ref;
+      console.log(res);
+    })
+    //console.log("Created doc with ref " + ref);
   }
 
 }

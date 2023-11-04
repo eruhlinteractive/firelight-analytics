@@ -20,6 +20,8 @@ const app = express();
 
 const db = new FireStoreDB();
 
+//db.sendEvent({"event-type": "page-view", "data": {"details": "Used admin sdk"}});
+
 // Allows the body data to be parsed as JSON
 app.use(express.json());
 
