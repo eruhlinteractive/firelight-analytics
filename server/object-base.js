@@ -1,31 +1,17 @@
-export class TrackedEvent
-{
-    // Members 
-    eventID = undefined;
-    timestamp = undefined;
-
-    constructor(eventID){
-        this.eventID = eventID;
-    }
-    
-    getDataAsJSON()
-    {
-        console.error('The event is not to be used on its own!')
-        return {};
-    }
-
-    validate(jsonObject)
-    {
-        return this.eventID !== "" && this.eventID !== undefined;
-    }
-};
-
-
 export class Database
 {
+    // How many events we should cache before committing a transaction to the database
+    maxEventsToCache = 1;
+
+    // The currently cached events
+    eventCache = [];
     constructor(){};
 
-    async sendEvent(newEventJSON)
-    {};
+    // Send an event, optionally caching it for later
+    async logEvent(newEventJSON){};
+    
+
+    // Send a cache of validated events to the database (batch operation)
+    async sendCachedEvents(eventCache){};
 
 }
