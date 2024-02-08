@@ -32,11 +32,8 @@ app.listen(port, ()=>
 //db.logEvent({"event-type": "page-view", "data": {}});
 //db.logEvent({"event-type": "button-click", "data": {"details": "This is a batch write of a button click"}});
 
-
-
 // Sends a basic response to check if the server is alive
 app.get('/ping', (req, res)=>{
-
     // I'm a little teapot short and stout
     res.sendStatus(418);
 });
@@ -46,10 +43,7 @@ app.post('/log-event', (req, res)=>{
     let bodyData = req.body;
 
     let event = bodyData["event"];
-
-    //console.log("Got new event");
-    //console.log(event);
-
+    
     // Send the event to the dashboard
     let dbResponseCode = db.logEvent(event);
 

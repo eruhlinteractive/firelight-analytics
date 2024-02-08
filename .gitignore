@@ -22,7 +22,7 @@ lib-cov
 # Coverage directory used by tools like istanbul
 coverage
 *.lcov
-
+0
 # nyc test coverage
 .nyc_output
 
@@ -130,3 +130,4 @@ dist
 .pnp.*
 firebase-auth.js
 server/firebase-auth.json
+*Dockerfile*

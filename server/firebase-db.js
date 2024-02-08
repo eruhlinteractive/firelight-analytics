@@ -1,38 +1,30 @@
 "use strict";
-import { initializeApp } from "firebase-admin/app";
-import {getFirestore } from 'firebase-admin/firestore';
-import admin from "firebase-admin";
+import {initializeApp} from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
 import { Database } from './object-base.js';
 import * as fs from 'fs';
 import * as path from 'path';
 import { isValidEvent } from "./validator.js";
+import { applicationDefault } from "firebase-admin/app";
 
 // ================ FIREBASE SETTINGS =============================
 
-// The path to the service auth file (relative to the location of server.js)
-const firebaseAuthLocation = process.env.FIREBASE_AUTH_LOCATION;
-
-const authPath = path.join(process.cwd(), firebaseAuthLocation);
-
-const serviceAccountAuth = JSON.parse(fs.readFileSync(authPath));
+// URL of the firebase app
+const url = process.env.FIREBASE_URL;
 
 const firebaseApp = initializeApp({
-
-  credential: admin.credential.cert(serviceAccountAuth)
-
+  credential : applicationDefault(),
+  databaseURL : url
 });
 
 // Get the default Firestore database for this project
-const store = getFirestore();
-
+const store = getFirestore(firebaseApp);
 
 // Class to handle Firestore database transactions admin
 export class FireStoreDB extends Database
 {
-
   constructor(jsonConfig){
     super();
-
     try
     {
       this.maxEventsToCache = jsonConfig["maxEventsToCache"];
@@ -63,7 +55,7 @@ export class FireStoreDB extends Database
     }
 
     this.eventCache.push(newEventJSON);
-    console.log("Logged new event!");
+    console.log("Logged new event! of type: " + newEventJSON['event-type']);
 
     // Send cached events to the database if we've exceeded the cache limits
     if(this.eventCache.length >= this.maxEventsToCache - 1)
@@ -89,6 +81,7 @@ export class FireStoreDB extends Database
     // Don't try to send an undefined or empty event cache
     if(eventCache == undefined | eventCache.length == 0)
     {
+      console.log("Event cache is empty or undefined!");
       return;
     }
 
@@ -96,6 +89,7 @@ export class FireStoreDB extends Database
     // Create batch to send to the database
     for(const newEvent of eventCache)
     {
+      console.log(newEvent['event-type']);
       let colRef = store.collection(`events/${newEvent['event-type']}/event-list`);
       writeBatch.create(colRef.doc(), newEvent);
     }
@@ -104,6 +98,7 @@ export class FireStoreDB extends Database
     writeBatch.commit().then(async (ref)=>
     {
       eventCache = [];
+      console.log("Sent event cache to database!");
     });
 
   }
