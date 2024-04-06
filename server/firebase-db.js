@@ -45,9 +45,16 @@ export class FireStoreDB extends Database
     {
       newEventJSON = JSON.parse(newEventJSON);
     } 
+
     
     // Timestamp and validate event
     newEventJSON["timestamp"] = Date.now();
+
+
+    if( process.env.PRINT_DEBUG === "true")
+    {
+      console.log(JSON.stringify(newEventJSON));
+    }
 
     // Returns a JSON object in the format {isValid: bool, errors:[string]}
     let validationResult = isValidEvent(newEventJSON);

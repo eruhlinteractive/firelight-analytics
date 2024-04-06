@@ -1,22 +1,17 @@
-class firelight
+class FirelightAnalytics
 {
-
     endpoint = undefined;
-
-
-    constructor()
-    {}
 
     constructor(config)
     {
         this.endpoint = config["endpoint"];
     }
 
-    // Track a new (custom) event
+    /// Track a new (custom) event
     async trackEvent(eventData)
     {
         let body = {
-            "event": JSON.stringify(eventData)
+            "event": eventData
         }
         
         this.sendEvent(body);
@@ -25,20 +20,14 @@ class firelight
 
     async sendEvent(newEventJSON)
     {
-        // Build the JSON body
-        let bodyJSON = 
-        {
-            "event": JSON.stringify(newEventJSON)
-        };
-
         // Send the new event to the endpoint
         const response = await fetch(this.endpoint,
         {
             method: "POST",
             headers:{
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify(bodyJSON)
+            body: JSON.stringify(newEventJSON)
 
         });
 
@@ -62,9 +51,16 @@ class firelight
             "path": URL,
             "windowDimensions": windowSize,
             "ref": referrer
-        }
+        };
 
-        this.sendEvent(data);
+        let payload = {
+            "event-type": "page-view",
+            "data": data
+        };
+
+        this.trackEvent(payload);
     }
 
 }
+
+export {FirelightAnalytics};
