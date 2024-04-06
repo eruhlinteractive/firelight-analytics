@@ -43,7 +43,7 @@ class firelight
         });
 
         // Something failed
-        if(response.status != 201 || response.status != 200)
+        if(response.status != 201 && response.status != 200)
         {
             console.log("Failed to log event");
         }
