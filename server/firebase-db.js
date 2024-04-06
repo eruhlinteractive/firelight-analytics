@@ -40,8 +40,12 @@ export class FireStoreDB extends Database
   // Log a new event
   async logEvent(newEventJSON)
   {
-    //const docRef = doc(store, 'events', newEventJSON["event-type"]);
-
+    
+    if(typeof newEventJSON === 'string')
+    {
+      newEventJSON = JSON.parse(newEventJSON);
+    } 
+    
     // Timestamp and validate event
     newEventJSON["timestamp"] = Date.now();
 

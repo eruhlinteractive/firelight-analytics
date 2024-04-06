@@ -61,7 +61,7 @@ function validateAndGenerateErrors(eventJSON, validationFunction)
     if(!isEventValid)
     {
         let errorMessages = validationFunction.errors.map(err => err.message);
-        console.log(errorMessages);
+        //console.log(errorMessages);
         validationInfo['errors'] = errorMessages;
     }
    

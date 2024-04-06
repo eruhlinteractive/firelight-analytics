@@ -19,7 +19,7 @@ class firelight
             "event": JSON.stringify(eventData)
         }
         
-        fetch(this.endpoint)
+        this.sendEvent(body);
     }
 
 
