@@ -131,3 +131,4 @@ dist
 firebase-auth.js
 server/firebase-auth.json
 *Dockerfile*
+server.tar.xz
